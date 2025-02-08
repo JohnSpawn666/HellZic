@@ -1,4 +1,4 @@
-package com.hellteam.HellZic;
+package com.hellteam.hellzic;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
