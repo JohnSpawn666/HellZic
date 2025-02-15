@@ -1,4 +1,7 @@
 # HellZic
+
 Software for Hell Musique
 
- Initialisation GIT
+Ajout des opérations sur l'artiste
+
+TODO -> ALBUM

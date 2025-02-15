@@ -4,11 +4,14 @@ import com.hellteam.hellzic.bdd.artiste.Artiste;
 import com.hellteam.hellzic.bdd.artiste.IArtisteRepository;
 import com.hellteam.hellzic.bean.ArtisteBean;
 import com.hellteam.hellzic.error.DuplicateException;
+import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.mapper.ArtisteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Component
 public class ArtisteModel {
@@ -18,12 +21,18 @@ public class ArtisteModel {
 
     ArtisteMapper mapper = new ArtisteMapper();
 
-    // TODO : TU + uppercase nom artiste
+    public ArtisteBean createArtiste(ArtisteBean artisteBean) throws TechnicalException, DuplicateException {
+        return mapper.mapToArtisteBean(saveArtiste(mapper.mapToArtiste(checkValues(artisteBean))));
+    }
 
-
-    public ArtisteBean createArtiste(ArtisteBean artisteBean) throws Exception {
-        return mapper.mapToArtisteBean(saveArtiste(checkValuesAndMapToBean(artisteBean)));
-
+    public ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, NoneException {
+        try {
+            return mapper.mapToArtisteBean(repository.save(mapper.mapToArtiste(artisteBean, id)));
+        } catch (NumberFormatException ex) {
+            throw new TechnicalException("L'ID doit être un nombre");
+        } catch (Exception ex) {
+            throw new NoneException("L'ID doit déjà exister");
+        }
     }
 
     private Artiste saveArtiste(Artiste artiste) throws DuplicateException {
@@ -34,15 +43,26 @@ public class ArtisteModel {
         }
     }
 
-    private Artiste checkValuesAndMapToBean(ArtisteBean artisteBean) throws Exception {
-        checkValues(artisteBean);
-        return mapper.mapToArtiste(artisteBean);
+    public ArtisteBean selectArtiste(String id) throws NoneException {
+        try {
+            return mapper.mapToArtisteBean(repository.getReferenceById(Long.parseLong(id)));
+        } catch (Exception ex) {
+            throw new NoneException("Aucun artiste trouvé avec l'id " + id);
+        }
     }
 
-    private void checkValues(ArtisteBean artisteBean) throws Exception {
+    public List<ArtisteBean> findByLabel(String label) {
+        return repository.findByLabelContaining(label.toUpperCase()).stream()
+                .map(obj -> mapper.mapToArtisteBean(obj))
+                .toList();
+    }
+
+    private ArtisteBean checkValues(ArtisteBean artisteBean) throws TechnicalException {
         if (!StringUtils.hasLength(artisteBean.label())) {
             throw new TechnicalException("Le nom n'est pas renseigné");
         }
+        return artisteBean;
     }
+
 
 }
