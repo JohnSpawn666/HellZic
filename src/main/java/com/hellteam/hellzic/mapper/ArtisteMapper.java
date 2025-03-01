@@ -18,9 +18,8 @@ public class ArtisteMapper {
     }
 
     public Artiste mapToArtiste(ArtisteBean artisteBean, String id) {
-        return new Artiste()
-                .id(Long.parseLong(id))
-                .label(artisteBean.label().toUpperCase());
+        return mapToArtiste(artisteBean)
+                .id(Long.parseLong(id));
     }
 
 }

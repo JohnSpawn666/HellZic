@@ -53,13 +53,13 @@ public class ArtisteModel {
 
     public List<ArtisteBean> findByLabel(String label) {
         return repository.findByLabelContaining(label.toUpperCase()).stream()
-                .map(obj -> mapper.mapToArtisteBean(obj))
+                .map(dao -> mapper.mapToArtisteBean(dao))
                 .toList();
     }
 
     private ArtisteBean checkValues(ArtisteBean artisteBean) throws TechnicalException {
         if (!StringUtils.hasLength(artisteBean.label())) {
-            throw new TechnicalException("Le nom n'est pas renseigné");
+            throw new TechnicalException("Le nom de l'artiste n'est pas renseigné");
         }
         return artisteBean;
     }

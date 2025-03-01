@@ -1,10 +1,10 @@
 package com.hellteam.hellzic.control;
 
-import com.hellteam.hellzic.bean.ArtisteBean;
+import com.hellteam.hellzic.bean.AlbumBean;
 import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
-import com.hellteam.hellzic.service.artiste.ArtisteServiceImpl;
+import com.hellteam.hellzic.service.album.AlbumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,16 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/artiste")
-public class ArtisteController {
+@RequestMapping("/album")
+public class AlbumController {
 
     @Autowired
-    ArtisteServiceImpl service;
+    AlbumServiceImpl service;
 
     @PostMapping("/create")
-    ArtisteBean createArtiste(@RequestBody ArtisteBean artisteBean) {
+    AlbumBean createAlbum(@RequestBody AlbumBean bean) {
         try {
-            return service.createArtiste(artisteBean);
+            return service.createAlbum(bean);
         } catch (TechnicalException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
         } catch (DuplicateException ex) {
@@ -33,25 +33,24 @@ public class ArtisteController {
     }
 
     @PutMapping("/update/{id}")
-    ArtisteBean updateArtiste(@RequestBody ArtisteBean artisteBean, @PathVariable("id") String id) {
+    AlbumBean updateAlbum(@RequestBody AlbumBean bean, @PathVariable("id") String id) {
         try {
-            return service.updateArtiste(artisteBean, id);
+            return service.updateAlbum(bean, id);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex);
         }
     }
 
     @GetMapping("select/{id}")
-    ArtisteBean selectArtiste(@PathVariable("id") String id) {
+    AlbumBean selectAlbum(@PathVariable("id") String id) {
         try {
-            return service.selectArtiste(id);
+            return service.selectAlbum(id);
         } catch (NoneException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
         }
     }
 
-    @GetMapping("find")
-    List<ArtisteBean> findArtistsByLabel(@RequestParam("label") String label) {
+    List<AlbumBean> findAlbumsByLabel(@RequestParam("label") String label) {
         return service.findByLabel(label);
     }
 

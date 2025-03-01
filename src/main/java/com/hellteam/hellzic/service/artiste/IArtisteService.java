@@ -1,4 +1,4 @@
-package com.hellteam.hellzic.service;
+package com.hellteam.hellzic.service.artiste;
 
 import com.hellteam.hellzic.bean.ArtisteBean;
 import com.hellteam.hellzic.error.NoneException;
