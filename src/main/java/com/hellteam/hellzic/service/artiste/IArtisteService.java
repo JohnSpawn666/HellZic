@@ -19,5 +19,5 @@ public interface IArtisteService {
 
     List<ArtisteBean> findByLabel(String label);
 
-    void delete(Long id);
+    void deleteById(Long id);
 }

@@ -3,13 +3,12 @@ package com.hellteam.hellzic.model;
 import com.hellteam.hellzic.bdd.chanson.Chanson;
 import com.hellteam.hellzic.bdd.chanson.IChansonRepository;
 import com.hellteam.hellzic.bean.ChansonBean;
-import com.hellteam.hellzic.error.DuplicateException;
-import com.hellteam.hellzic.error.NotFoundValueDatabase;
-import com.hellteam.hellzic.error.NullException;
-import com.hellteam.hellzic.error.TechnicalException;
+import com.hellteam.hellzic.error.*;
 import com.hellteam.hellzic.mapper.ChansonMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ChansonModel {
@@ -26,7 +25,7 @@ public class ChansonModel {
 
     public ChansonBean createChanson(ChansonBean chansonBean) throws TechnicalException, NotFoundValueDatabase, DuplicateException, NullException {
         checkValues(chansonBean);
-        return mapper.mapToChansonBean(saveChanson(chansonBean, mapper.mapToChansonEntity(chansonBean)));
+        return mapper.mapToChansonBean(saveChanson(chansonBean, mapper.mapToChanson(chansonBean)));
     }
 
     private Chanson saveChanson(ChansonBean chansonBean, Chanson entity) throws DuplicateException, NotFoundValueDatabase {
@@ -46,5 +45,35 @@ public class ChansonModel {
         if (chansonBean.albumId == null) {
             throw new NullException("L'ID de l'album doit être renseigné");
         }
+    }
+
+    public ChansonBean updateChanson(ChansonBean chansonBean, String id) throws TechnicalException, NoneException {
+        try {
+            return mapper.mapToChansonBean(repository.save(mapper.mapToChanson(chansonBean, id)));
+        } catch (NumberFormatException ex) {
+            throw new TechnicalException("L'ID doit être un nombre");
+        } catch (Exception ex) {
+            throw new NoneException("L'ID doit déjà exister");
+        }
+
+    }
+
+    public ChansonBean selectChanson(String id) throws NoneException {
+        try {
+            return mapper.mapToChansonBean(repository.getReferenceById(Long.parseLong(id)));
+        } catch (Exception ex) {
+            throw new NoneException("Aucune chanson trouvé avec l'ID " + id);
+        }
+
+    }
+
+    public List<ChansonBean> findByLabel(String label) {
+        return repository.findByLabelContaining(label.toLowerCase()).stream()
+                .map(dao -> mapper.mapToChansonBean(dao))
+                .toList();
+    }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }

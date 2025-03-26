@@ -59,7 +59,7 @@ public class ArtisteController implements IControl<ArtisteBean> {
 
     @Override
     public void delete(Long id) {
-        service.delete(id);
+        service.deleteById(id);
     }
 
 }

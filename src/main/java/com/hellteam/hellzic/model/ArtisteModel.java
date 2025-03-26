@@ -54,7 +54,7 @@ public class ArtisteModel {
     }
 
     public List<ArtisteBean> findByLabel(String label) {
-        return repository.findByLabelContaining(label.toUpperCase()).stream()
+        return repository.findByLabelContaining(label.toLowerCase()).stream()
                 .map(dao -> mapper.mapToArtisteBean(dao))
                 .toList();
     }

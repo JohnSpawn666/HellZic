@@ -2,8 +2,8 @@ package com.hellteam.hellzic.mapper;
 
 import com.hellteam.hellzic.bdd.album.Album;
 import com.hellteam.hellzic.bean.AlbumBean;
+import com.hellteam.hellzic.model.CapitalizeUtil;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @Component
 public class AlbumMapper {
@@ -11,13 +11,13 @@ public class AlbumMapper {
     public AlbumBean mapToAlbumBean(Album album) {
         return new AlbumBean()
                 .id(album.id())
-                .label(StringUtils.capitalize(album.label().toLowerCase()));
+                .label(CapitalizeUtil.capitalizeEachWord(album.label().toLowerCase()));
     }
 
     public Album mapToAlbumEntity(AlbumBean bean) {
         return new Album()
                 .id(bean.id())
-                .label(StringUtils.capitalize(bean.label().toLowerCase()));
+                .label(bean.label().toLowerCase());
     }
 
     public Album mapToAlbumEntity(AlbumBean bean, String id) {

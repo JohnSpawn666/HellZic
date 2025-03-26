@@ -1,14 +1,10 @@
 package com.hellteam.hellzic.control;
 
 import com.hellteam.hellzic.bean.ChansonBean;
-import com.hellteam.hellzic.error.DuplicateException;
-import com.hellteam.hellzic.error.NotFoundValueDatabase;
-import com.hellteam.hellzic.error.NullException;
-import com.hellteam.hellzic.error.TechnicalException;
+import com.hellteam.hellzic.error.*;
 import com.hellteam.hellzic.service.chanson.IChansonService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -29,28 +25,38 @@ public class ChansonController implements IControl<ChansonBean> {
             return service.createChanson(chansonBean);
         } catch (NotFoundValueDatabase | DuplicateException | NullException ex) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
-        } catch (TechnicalException e) {
-            throw new RuntimeException(e);
+        } catch (TechnicalException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex);
         }
     }
 
     @Override
-    public ChansonBean update(ChansonBean chansonBean, String id) {
-        throw new UnsupportedOperationException("Not implemented");
+    public ChansonBean update(@RequestBody ChansonBean chansonBean, @PathVariable("id") String id) {
+        try {
+            return service.updateChanson(chansonBean, id);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex);
+        }
     }
 
     @Override
-    public ChansonBean select(String id) {
-        throw new UnsupportedOperationException("Not implemented");
+    public ChansonBean select(@PathVariable("id") String id) {
+        try {
+            return service.selectChanson(id);
+        } catch (NoneException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
     }
 
     @Override
-    public List<ChansonBean> findByLabel(String label) {
-        throw new UnsupportedOperationException("Not implemented");
+    public List<ChansonBean> findByLabel(@RequestParam("label") String label) {
+        return service.findByLabel(label);
     }
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not implemented");
+        service.delete(id);
     }
 }

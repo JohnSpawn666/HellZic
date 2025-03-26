@@ -8,7 +8,6 @@ import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.mapper.AlbumMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class AlbumModel {
     }
 
     public List<AlbumBean> findByLabel(String label) {
-        return repository.findByLabelContaining(StringUtils.capitalize(label.toLowerCase())).stream()
+        return repository.findByLabelContaining(CapitalizeUtil.capitalizeEachWord(label.toLowerCase())).stream()
                 .map(dao -> mapper.mapToAlbumBean(dao))
                 .toList();
     }

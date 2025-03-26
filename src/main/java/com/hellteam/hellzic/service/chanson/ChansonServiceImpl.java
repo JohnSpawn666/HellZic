@@ -1,24 +1,43 @@
 package com.hellteam.hellzic.service.chanson;
 
 import com.hellteam.hellzic.bean.ChansonBean;
-import com.hellteam.hellzic.error.DuplicateException;
-import com.hellteam.hellzic.error.NotFoundValueDatabase;
-import com.hellteam.hellzic.error.NullException;
-import com.hellteam.hellzic.error.TechnicalException;
+import com.hellteam.hellzic.error.*;
 import com.hellteam.hellzic.model.ChansonModel;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ChansonServiceImpl implements IChansonService {
 
-    ChansonModel chansonModel;
+    ChansonModel model;
 
-    public ChansonServiceImpl(ChansonModel chansonModel) {
-        this.chansonModel = chansonModel;
+    public ChansonServiceImpl(ChansonModel model) {
+        this.model = model;
     }
 
     @Override
     public ChansonBean createChanson(ChansonBean bean) throws TechnicalException, NotFoundValueDatabase, DuplicateException, NullException {
-        return chansonModel.createChanson(bean);
+        return model.createChanson(bean);
+    }
+
+    @Override
+    public ChansonBean updateChanson(ChansonBean chansonBean, String id) throws TechnicalException, NoneException {
+        return model.updateChanson(chansonBean, id);
+    }
+
+    @Override
+    public ChansonBean selectChanson(String id) throws NoneException {
+        return model.selectChanson(id);
+    }
+
+    @Override
+    public List<ChansonBean> findByLabel(String label) {
+        return model.findByLabel(label);
+    }
+
+    @Override
+    public void delete(Long id) {
+        model.deleteById(id);
     }
 }
