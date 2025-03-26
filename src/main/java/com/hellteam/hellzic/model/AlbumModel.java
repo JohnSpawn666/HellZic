@@ -24,14 +24,13 @@ public class AlbumModel {
         mapper = new AlbumMapper();
     }
 
-
     public AlbumBean createAlbum(AlbumBean bean) throws TechnicalException, DuplicateException {
-        return mapper.mapToAlbumBean(saveAlbum(mapper.mapToAlbum(checkValues(bean))));
+        return mapper.mapToAlbumBean(saveAlbum(mapper.mapToAlbumEntity(checkValues(bean))));
     }
 
     public AlbumBean updateAlbum(AlbumBean bean, String id) throws TechnicalException, NoneException {
         try {
-            return mapper.mapToAlbumBean(repository.save(mapper.mapToAlbum(bean, id)));
+            return mapper.mapToAlbumBean(repository.save(mapper.mapToAlbumEntity(bean, id)));
         } catch (NumberFormatException ex) {
             throw new TechnicalException("L'id doit être un nombre");
         } catch (Exception ex) {
@@ -63,9 +62,7 @@ public class AlbumModel {
 
 
     private AlbumBean checkValues(AlbumBean bean) throws TechnicalException {
-        if (!StringUtils.hasLength(bean.label())) {
-            throw new TechnicalException("Le nom de l'album n'est pas renseigné");
-        }
+        CheckUtil.checkNullValues(bean.label, "Le nom de l'album");
         return bean;
     }
 

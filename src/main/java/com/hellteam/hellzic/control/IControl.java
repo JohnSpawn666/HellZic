@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 public interface IControl<B> {
 
     @PostMapping("/create")

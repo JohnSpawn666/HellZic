@@ -8,7 +8,6 @@ import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.mapper.ArtisteMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -61,9 +60,7 @@ public class ArtisteModel {
     }
 
     private ArtisteBean checkValues(ArtisteBean artisteBean) throws TechnicalException {
-        if (!StringUtils.hasLength(artisteBean.label())) {
-            throw new TechnicalException("Le nom de l'artiste n'est pas renseigné");
-        }
+        CheckUtil.checkNullValues(artisteBean.label, "Le nom de l'artiste");
         return artisteBean;
     }
 
