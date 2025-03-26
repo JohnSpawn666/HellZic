@@ -5,22 +5,26 @@ import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.service.album.AlbumServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/album")
-public class AlbumController {
+public class AlbumController implements IControl<AlbumBean> {
 
-    @Autowired
     AlbumServiceImpl service;
 
-    @PostMapping("/create")
-    AlbumBean createAlbum(@RequestBody AlbumBean bean) {
+    public AlbumController(AlbumServiceImpl service) {
+        this.service = service;
+    }
+
+    @Override
+    public AlbumBean create(@RequestBody AlbumBean bean) {
         try {
             return service.createAlbum(bean);
         } catch (TechnicalException ex) {
@@ -32,8 +36,8 @@ public class AlbumController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    AlbumBean updateAlbum(@RequestBody AlbumBean bean, @PathVariable("id") String id) {
+    @Override
+    public AlbumBean update(@RequestBody AlbumBean bean, @PathVariable("id") String id) {
         try {
             return service.updateAlbum(bean, id);
         } catch (Exception ex) {
@@ -41,8 +45,8 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("select/{id}")
-    AlbumBean selectAlbum(@PathVariable("id") String id) {
+    @Override
+    public AlbumBean select(@PathVariable("id") String id) {
         try {
             return service.selectAlbum(id);
         } catch (NoneException ex) {
@@ -50,8 +54,14 @@ public class AlbumController {
         }
     }
 
-    List<AlbumBean> findAlbumsByLabel(@RequestParam("label") String label) {
+    @Override
+    public List<AlbumBean> findByLabel(@RequestParam("label") String label) {
         return service.findByLabel(label);
+    }
+
+    @Override
+    public void delete(Long id) {
+        service.deleteById(id);
     }
 
 }

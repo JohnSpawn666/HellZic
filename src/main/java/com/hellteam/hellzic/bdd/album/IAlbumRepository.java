@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IAlbumRepository extends JpaRepository<Album, Long> {
 
-    List<Album> findByAlbumContaining(String label);
+    List<Album> findByLabelContaining(String label);
 }

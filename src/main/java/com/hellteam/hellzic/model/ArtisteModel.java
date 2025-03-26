@@ -7,7 +7,6 @@ import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.mapper.ArtisteMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -16,10 +15,14 @@ import java.util.List;
 @Component
 public class ArtisteModel {
 
-    @Autowired
     IArtisteRepository repository;
 
-    ArtisteMapper mapper = new ArtisteMapper();
+    ArtisteMapper mapper;
+
+    public ArtisteModel(IArtisteRepository repository, ArtisteMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     public ArtisteBean createArtiste(ArtisteBean artisteBean) throws TechnicalException, DuplicateException {
         return mapper.mapToArtisteBean(saveArtiste(mapper.mapToArtiste(checkValues(artisteBean))));
@@ -65,4 +68,7 @@ public class ArtisteModel {
     }
 
 
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
 }

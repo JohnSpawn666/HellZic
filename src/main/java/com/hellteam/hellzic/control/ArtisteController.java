@@ -5,7 +5,6 @@ import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.service.artiste.ArtisteServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,13 +13,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/artiste")
-public class ArtisteController {
+public class ArtisteController implements IControl<ArtisteBean> {
 
-    @Autowired
     ArtisteServiceImpl service;
 
-    @PostMapping("/create")
-    ArtisteBean createArtiste(@RequestBody ArtisteBean artisteBean) {
+    public ArtisteController(ArtisteServiceImpl service) {
+        this.service = service;
+    }
+
+    @Override
+    public ArtisteBean create(@RequestBody ArtisteBean artisteBean) {
         try {
             return service.createArtiste(artisteBean);
         } catch (TechnicalException ex) {
@@ -32,8 +34,8 @@ public class ArtisteController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    ArtisteBean updateArtiste(@RequestBody ArtisteBean artisteBean, @PathVariable("id") String id) {
+    @Override
+    public ArtisteBean update(@RequestBody ArtisteBean artisteBean, @PathVariable("id") String id) {
         try {
             return service.updateArtiste(artisteBean, id);
         } catch (Exception ex) {
@@ -41,8 +43,8 @@ public class ArtisteController {
         }
     }
 
-    @GetMapping("select/{id}")
-    ArtisteBean selectArtiste(@PathVariable("id") String id) {
+    @Override
+    public ArtisteBean select(@PathVariable("id") String id) {
         try {
             return service.selectArtiste(id);
         } catch (NoneException ex) {
@@ -50,9 +52,14 @@ public class ArtisteController {
         }
     }
 
-    @GetMapping("find")
-    List<ArtisteBean> findArtistsByLabel(@RequestParam("label") String label) {
+    @Override
+    public List<ArtisteBean> findByLabel(@RequestParam("label") String label) {
         return service.findByLabel(label);
+    }
+
+    @Override
+    public void delete(Long id) {
+        service.delete(id);
     }
 
 }

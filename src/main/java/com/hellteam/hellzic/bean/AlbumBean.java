@@ -7,9 +7,10 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(fluent = true)
+@SuppressWarnings("")
 public class AlbumBean {
 
-    private Long id;
-    private String label;
+    public Long id;
+    public String label;
 
 }

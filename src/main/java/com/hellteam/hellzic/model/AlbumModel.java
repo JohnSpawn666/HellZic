@@ -7,7 +7,6 @@ import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.mapper.AlbumMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -16,10 +15,15 @@ import java.util.List;
 @Component
 public class AlbumModel {
 
-    @Autowired
     IAlbumRepository repository;
 
-    AlbumMapper mapper = new AlbumMapper();
+    AlbumMapper mapper;
+
+    public AlbumModel(IAlbumRepository repository) {
+        this.repository = repository;
+        mapper = new AlbumMapper();
+    }
+
 
     public AlbumBean createAlbum(AlbumBean bean) throws TechnicalException, DuplicateException {
         return mapper.mapToAlbumBean(saveAlbum(mapper.mapToAlbum(checkValues(bean))));
@@ -52,7 +56,7 @@ public class AlbumModel {
     }
 
     public List<AlbumBean> findByLabel(String label) {
-        return repository.findByAlbumContaining(StringUtils.capitalize(label.toLowerCase())).stream()
+        return repository.findByLabelContaining(StringUtils.capitalize(label.toLowerCase())).stream()
                 .map(dao -> mapper.mapToAlbumBean(dao))
                 .toList();
     }
@@ -63,5 +67,9 @@ public class AlbumModel {
             throw new TechnicalException("Le nom de l'album n'est pas renseigné");
         }
         return bean;
+    }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }

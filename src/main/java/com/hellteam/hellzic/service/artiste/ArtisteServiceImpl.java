@@ -5,7 +5,6 @@ import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
 import com.hellteam.hellzic.model.ArtisteModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @Service
 public class ArtisteServiceImpl implements IArtisteService {
 
-    @Autowired
     ArtisteModel model;
+
+    public ArtisteServiceImpl(ArtisteModel model) {
+        this.model = model;
+    }
 
     @Override
     public ArtisteBean createArtiste(ArtisteBean artisteBean) throws TechnicalException, DuplicateException {
@@ -34,6 +36,11 @@ public class ArtisteServiceImpl implements IArtisteService {
     @Override
     public List<ArtisteBean> findByLabel(String label) {
         return model.findByLabel(label);
+    }
+
+    @Override
+    public void delete(Long id) {
+        model.deleteById(id);
     }
 
 }
