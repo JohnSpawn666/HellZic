@@ -1,4 +1,4 @@
-package com.hellteam.hellzic.mapper.album;
+package com.hellteam.hellzic.mapper;
 
 import com.hellteam.hellzic.bdd.artiste.Artiste;
 import com.hellteam.hellzic.bean.ArtisteBean;

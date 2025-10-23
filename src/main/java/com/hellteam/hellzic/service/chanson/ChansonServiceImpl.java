@@ -28,7 +28,7 @@ public class ChansonServiceImpl implements IChansonService {
 
     @Override
     public ChansonBean selectChanson(String id) throws NoneException {
-        return model.selectChanson(id);
+        return model.selectChansonById(id);
     }
 
     @Override

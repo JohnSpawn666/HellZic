@@ -6,8 +6,8 @@ import com.hellteam.hellzic.bean.AlbumBean;
 import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
-import com.hellteam.hellzic.mapper.album.IAlbumMapper;
-import com.hellteam.hellzic.mapper.album.IAlbumMapperImpl;
+import com.hellteam.hellzic.mapper.IAlbumMapper;
+import com.hellteam.hellzic.mapper.IAlbumMapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

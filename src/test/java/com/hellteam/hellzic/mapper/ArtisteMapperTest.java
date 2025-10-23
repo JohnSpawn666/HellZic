@@ -2,8 +2,6 @@ package com.hellteam.hellzic.mapper;
 
 import com.hellteam.hellzic.bdd.artiste.Artiste;
 import com.hellteam.hellzic.bean.ArtisteBean;
-import com.hellteam.hellzic.mapper.album.IArtisteMapper;
-import com.hellteam.hellzic.mapper.album.IArtisteMapperImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

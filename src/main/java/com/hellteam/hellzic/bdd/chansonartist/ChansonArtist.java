@@ -2,13 +2,9 @@ package com.hellteam.hellzic.bdd.chansonartist;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.Data;
 
-@Getter
-@Setter
-@Accessors(fluent = true)
+@Data
 @Entity
 public class ChansonArtist {
 

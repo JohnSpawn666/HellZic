@@ -3,15 +3,11 @@ package com.hellteam.hellzic.bdd.chansonartist;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.Data;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
-@Accessors(fluent = true)
+@Data
 @Embeddable
 public class ChansonArtistId implements Serializable {
 

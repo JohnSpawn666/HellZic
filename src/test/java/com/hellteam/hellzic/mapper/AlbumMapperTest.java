@@ -2,8 +2,6 @@ package com.hellteam.hellzic.mapper;
 
 import com.hellteam.hellzic.bdd.album.Album;
 import com.hellteam.hellzic.bean.AlbumBean;
-import com.hellteam.hellzic.mapper.album.IAlbumMapper;
-import com.hellteam.hellzic.mapper.album.IAlbumMapperImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

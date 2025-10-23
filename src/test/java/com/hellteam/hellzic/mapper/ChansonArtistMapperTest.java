@@ -9,27 +9,27 @@ import org.junit.jupiter.api.Test;
 
 class ChansonArtistMapperTest {
 
-    ChansonArtistMapper mapper;
+    IChansonArtistMapper chansonArtistMapper;
 
     @BeforeEach
     void setUp() {
-        mapper = new ChansonArtistMapper();
+        chansonArtistMapper = new IChansonArtistMapperImpl();
     }
 
     @Test
     void mapToChansonArtistTest() {
 
         ChansonArtistBean chansonArtistBean = new ChansonArtistBean();
-        chansonArtistBean.artistId(4L);
-        chansonArtistBean.chansonId(6L);
+        chansonArtistBean.setArtistId(4L);
+        chansonArtistBean.setChansonId(6L);
 
-        ChansonArtist response = mapper.mapToChansonArtist(chansonArtistBean);
+        ChansonArtist response = chansonArtistMapper.mapToChansonArtist(chansonArtistBean);
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(ChansonArtist::chansonArtistId)
+                .extracting(ChansonArtist::getChansonArtistId)
                 .isNotNull()
-                .extracting(ChansonArtistId::artistId, ChansonArtistId::chansonId)
+                .extracting(ChansonArtistId::getArtistId, ChansonArtistId::getChansonId)
                 .containsExactly(4L, 6L);
 
     }

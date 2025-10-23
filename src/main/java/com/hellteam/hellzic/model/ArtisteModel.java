@@ -6,8 +6,8 @@ import com.hellteam.hellzic.bean.ArtisteBean;
 import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
-import com.hellteam.hellzic.mapper.album.IArtisteMapper;
-import com.hellteam.hellzic.mapper.album.IArtisteMapperImpl;
+import com.hellteam.hellzic.mapper.IArtisteMapper;
+import com.hellteam.hellzic.mapper.IArtisteMapperImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -10,25 +10,25 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class ChansonMapperTest {
 
-    ChansonMapper mapper;
+    IChansonMapper chansonMapper;
 
     @BeforeEach
     void setUp() {
-        mapper = new ChansonMapper();
+        chansonMapper = new IChansonMapperImpl();
     }
 
     @Test
     void mapToChansonWithOneParamTest() {
 
         ChansonBean chansonBean = new ChansonBean();
-        chansonBean.titre("SCARS");
-        chansonBean.albumId(42L);
+        chansonBean.setTitre("SCARS");
+        chansonBean.setAlbumId(42L);
 
-        Chanson response = mapper.mapToChanson(chansonBean);
+        Chanson response = chansonMapper.mapToChanson(chansonBean);
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(Chanson::label, Chanson::albumId)
+                .extracting(Chanson::getLabel, Chanson::getAlbumId)
                 .containsExactly("scars", 42L);
     }
 
@@ -36,14 +36,14 @@ class ChansonMapperTest {
     void mapToChansonWithTwoParams() {
 
         ChansonBean chansonBean = new ChansonBean();
-        chansonBean.titre("SCARS");
-        chansonBean.albumId(25L);
+        chansonBean.setTitre("SCARS");
+        chansonBean.setAlbumId(25L);
 
-        Chanson response = mapper.mapToChanson(chansonBean, "42");
+        Chanson response = chansonMapper.mapToChanson(chansonBean, "42");
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(Chanson::id, Chanson::albumId, Chanson::label)
+                .extracting(Chanson::getId, Chanson::getAlbumId, Chanson::getLabel)
                 .containsExactly(42L, 25L, "scars");
     }
 
@@ -52,16 +52,16 @@ class ChansonMapperTest {
     void mapToChansonBean(String label) {
 
         Chanson chanson = new Chanson();
-        chanson.id(42L);
-        chanson.label(label);
-        chanson.albumId(25L);
+        chanson.setId(42L);
+        chanson.setLabel(label);
+        chanson.setAlbumId(25L);
 
 
-        ChansonBean response = mapper.mapToChansonBean(chanson);
+        ChansonBean response = chansonMapper.mapToChansonBean(chanson);
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(ChansonBean::id, ChansonBean::albumId, ChansonBean::titre)
+                .extracting(ChansonBean::getId, ChansonBean::getAlbumId, ChansonBean::getTitre)
                 .containsExactly(42L, 25L, "Scars");
 
     }
