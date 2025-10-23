@@ -6,7 +6,8 @@ import com.hellteam.hellzic.bean.ArtisteBean;
 import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
-import com.hellteam.hellzic.mapper.ArtisteMapper;
+import com.hellteam.hellzic.mapper.album.IArtisteMapper;
+import com.hellteam.hellzic.mapper.album.IArtisteMapperImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,56 +16,108 @@ import java.util.List;
 public class ArtisteModel {
 
     IArtisteRepository repository;
+    IArtisteMapper artisteMapper;
 
-    ArtisteMapper mapper;
-
-    public ArtisteModel(IArtisteRepository repository, ArtisteMapper mapper) {
+    /**
+     * Constructeur
+     *
+     * @param repository CRUD de la table Artiste
+     */
+    public ArtisteModel(IArtisteRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
+        artisteMapper = new IArtisteMapperImpl();
     }
 
+    /**
+     * Création d'un nouvel artiste
+     *
+     * @param artisteBean Bean représentant l'artiste
+     * @return Bean sauvegardé
+     * @throws TechnicalException ID non conforme
+     * @throws DuplicateException ID déjà existant
+     */
     public ArtisteBean createArtiste(ArtisteBean artisteBean) throws TechnicalException, DuplicateException {
-        return mapper.mapToArtisteBean(saveArtiste(mapper.mapToArtiste(checkValues(artisteBean))));
+        return artisteMapper.mapToArtisteBean(saveArtiste(artisteMapper.mapToArtiste(checkValues(artisteBean))));
     }
 
-    public ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, NoneException {
+    /**
+     * Mise à jour d'un artiste
+     *
+     * @param artisteBean Bean représentant l'artiste
+     * @param id          ID du bean déjà existant
+     * @return Artiste mis à jour
+     * @throws TechnicalException ID non conforme
+     * @throws DuplicateException ID déjà existant
+     */
+    public ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, DuplicateException {
         try {
-            return mapper.mapToArtisteBean(repository.save(mapper.mapToArtiste(artisteBean, id)));
-        } catch (NumberFormatException ex) {
+            return artisteMapper.mapToArtisteBean(repository.save(artisteMapper.mapToArtiste(artisteBean, id)));
+        } catch (NumberFormatException _) {
             throw new TechnicalException("L'ID doit être un nombre");
-        } catch (Exception ex) {
-            throw new NoneException("L'ID doit déjà exister");
+        } catch (Exception _) {
+            throw new DuplicateException("L'ID doit déjà exister");
         }
     }
 
+    /**
+     * Enregistrement de l'artiste
+     *
+     * @param artiste Bean à enregistrer
+     * @return Bean enregistré
+     * @throws DuplicateException Artiste déjà existant
+     */
     private Artiste saveArtiste(Artiste artiste) throws DuplicateException {
         try {
             return repository.save(artiste);
-        } catch (Exception ex) {
+        } catch (Exception _) {
             throw new DuplicateException("L'artiste existe déjà");
         }
     }
 
-    public ArtisteBean selectArtiste(String id) throws NoneException {
+    /**
+     * Sélection d'un artiste par son id
+     *
+     * @param id ID de l'artiste
+     * @return Bean de l'artiste
+     * @throws NoneException Aucun artiste rtouvé
+     */
+    public ArtisteBean selectArtisteById(String id) throws NoneException {
         try {
-            return mapper.mapToArtisteBean(repository.getReferenceById(Long.parseLong(id)));
-        } catch (Exception ex) {
+            return artisteMapper.mapToArtisteBean(repository.getReferenceById(Long.parseLong(id)));
+        } catch (Exception _) {
             throw new NoneException("Aucun artiste trouvé avec l'id " + id);
         }
     }
 
+    /**
+     * Recherche d'artistes par leur label
+     *
+     * @param label Chaine de caractère
+     * @return List d'artistes contenant la chaine de caractères
+     */
     public List<ArtisteBean> findByLabel(String label) {
         return repository.findByLabelContaining(label.toLowerCase()).stream()
-                .map(dao -> mapper.mapToArtisteBean(dao))
+                .map(dao -> artisteMapper.mapToArtisteBean(dao))
                 .toList();
     }
 
+    /**
+     * Vérification des différents paramètres du bean Artiste
+     *
+     * @param artisteBean Bean à vérifier
+     * @return Bean valide
+     * @throws TechnicalException Erreur sur un des apramètres du bean
+     */
     private ArtisteBean checkValues(ArtisteBean artisteBean) throws TechnicalException {
         CheckUtil.checkNullValues(artisteBean.label, "Le nom de l'artiste");
         return artisteBean;
     }
 
-
+    /**
+     * Suppression d'un artiste par son ID
+     *
+     * @param id ID de l'artiste à supprimer
+     */
     public void deleteById(Long id) {
         repository.deleteById(id);
     }

@@ -24,13 +24,13 @@ public class ArtisteServiceImpl implements IArtisteService {
     }
 
     @Override
-    public ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, NoneException {
+    public ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, DuplicateException {
         return model.updateArtiste(artisteBean, id);
     }
 
     @Override
     public ArtisteBean selectArtiste(String id) throws NoneException {
-        return model.selectArtiste(id);
+        return model.selectArtisteById(id);
     }
 
     @Override

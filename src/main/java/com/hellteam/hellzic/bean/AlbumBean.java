@@ -1,13 +1,8 @@
 package com.hellteam.hellzic.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.Data;
 
-@Getter
-@Setter
-@Accessors(fluent = true)
-@SuppressWarnings("")
+@Data
 public class AlbumBean {
 
     public Long id;

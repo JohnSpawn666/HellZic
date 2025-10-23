@@ -2,31 +2,33 @@ package com.hellteam.hellzic.mapper;
 
 import com.hellteam.hellzic.bdd.artiste.Artiste;
 import com.hellteam.hellzic.bean.ArtisteBean;
+import com.hellteam.hellzic.mapper.album.IArtisteMapper;
+import com.hellteam.hellzic.mapper.album.IArtisteMapperImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ArtisteMapperTest {
 
-    ArtisteMapper mapper;
+    IArtisteMapper artisteMapper;
 
     @BeforeEach
     void setUp() {
-        mapper = new ArtisteMapper();
+        artisteMapper = new IArtisteMapperImpl();
     }
 
     @Test
     void mapToArtisteBean() {
 
         Artiste artiste = new Artiste();
-        artiste.id(42L);
-        artiste.label("alissa white-gluz");
+        artiste.setId(42L);
+        artiste.setLabel("alissa white-gluz");
 
-        ArtisteBean response = mapper.mapToArtisteBean(artiste);
+        ArtisteBean response = artisteMapper.mapToArtisteBean(artiste);
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(ArtisteBean::id, ArtisteBean::label)
+                .extracting(ArtisteBean::getId, ArtisteBean::getLabel)
                 .containsExactly(42L, "ALISSA WHITE-GLUZ");
     }
 
@@ -34,14 +36,14 @@ class ArtisteMapperTest {
     void mapToArtisteTestWithOneParam() {
 
         ArtisteBean artisteBean = new ArtisteBean();
-        artisteBean.id(42L);
-        artisteBean.label("alissa white-gluz");
+        artisteBean.setId(42L);
+        artisteBean.setLabel("alissa white-gluz");
 
-        Artiste response = mapper.mapToArtiste(artisteBean);
+        Artiste response = artisteMapper.mapToArtiste(artisteBean);
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(Artiste::id, Artiste::label)
+                .extracting(Artiste::getId, Artiste::getLabel)
                 .containsExactly(42L, "alissa white-gluz");
     }
 
@@ -49,13 +51,13 @@ class ArtisteMapperTest {
     void mapToArtisteWithTwoParamsTest() {
 
         ArtisteBean artisteBean = new ArtisteBean();
-        artisteBean.label("alissa white-gluz");
+        artisteBean.setLabel("alissa white-gluz");
 
-        Artiste response = mapper.mapToArtiste(artisteBean, "42");
+        Artiste response = artisteMapper.mapToArtiste(artisteBean, "42");
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(Artiste::id, Artiste::label)
+                .extracting(Artiste::getId, Artiste::getLabel)
                 .containsExactly(42L, "alissa white-gluz");
 
     }

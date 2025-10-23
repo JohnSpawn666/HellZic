@@ -13,7 +13,7 @@ public interface IArtisteService {
 
     ArtisteBean createArtiste(ArtisteBean artisteBean) throws TechnicalException, DuplicateException;
 
-    ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, NoneException;
+    ArtisteBean updateArtiste(ArtisteBean artisteBean, String id) throws TechnicalException, NoneException, DuplicateException;
 
     ArtisteBean selectArtiste(String id) throws NoneException;
 

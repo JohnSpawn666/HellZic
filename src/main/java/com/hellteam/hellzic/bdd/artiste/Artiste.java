@@ -1,13 +1,9 @@
 package com.hellteam.hellzic.bdd.artiste;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.Data;
 
-@Getter
-@Setter
-@Accessors(fluent = true)
+@Data
 @Entity
 public class Artiste {
 

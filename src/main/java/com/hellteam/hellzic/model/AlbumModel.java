@@ -6,7 +6,9 @@ import com.hellteam.hellzic.bean.AlbumBean;
 import com.hellteam.hellzic.error.DuplicateException;
 import com.hellteam.hellzic.error.NoneException;
 import com.hellteam.hellzic.error.TechnicalException;
-import com.hellteam.hellzic.mapper.AlbumMapper;
+import com.hellteam.hellzic.mapper.album.IAlbumMapper;
+import com.hellteam.hellzic.mapper.album.IAlbumMapperImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,11 +18,12 @@ public class AlbumModel {
 
     IAlbumRepository repository;
 
-    AlbumMapper mapper;
+    IAlbumMapper mapper;
 
+    @Autowired
     public AlbumModel(IAlbumRepository repository) {
         this.repository = repository;
-        mapper = new AlbumMapper();
+        mapper = new IAlbumMapperImpl();
     }
 
     public AlbumBean createAlbum(AlbumBean bean) throws TechnicalException, DuplicateException {
@@ -30,17 +33,17 @@ public class AlbumModel {
     public AlbumBean updateAlbum(AlbumBean bean, String id) throws TechnicalException, NoneException {
         try {
             return mapper.mapToAlbumBean(repository.save(mapper.mapToAlbumEntity(bean, id)));
-        } catch (NumberFormatException ex) {
-            throw new TechnicalException("L'id doit être un nombre");
-        } catch (Exception ex) {
-            throw new NoneException("L'id doit exister");
+        } catch (NumberFormatException _) {
+            throw new TechnicalException("L'id doit être un nombre : " + id);
+        } catch (Exception _) {
+            throw new NoneException("L'id ne doit pas être null");
         }
     }
 
     private Album saveAlbum(Album album) throws DuplicateException {
         try {
             return repository.save(album);
-        } catch (Exception ex) {
+        } catch (Exception _) {
             throw new DuplicateException("L'album existe déjà");
         }
     }
@@ -48,7 +51,7 @@ public class AlbumModel {
     public AlbumBean selectAlbum(String id) throws NoneException {
         try {
             return mapper.mapToAlbumBean(repository.getReferenceById(Long.parseLong(id)));
-        } catch (Exception ex) {
+        } catch (Exception _) {
             throw new NoneException("Aucun album trouvé avec l'id " + id);
         }
     }

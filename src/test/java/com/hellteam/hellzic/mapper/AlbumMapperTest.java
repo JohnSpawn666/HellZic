@@ -2,31 +2,30 @@ package com.hellteam.hellzic.mapper;
 
 import com.hellteam.hellzic.bdd.album.Album;
 import com.hellteam.hellzic.bean.AlbumBean;
+import com.hellteam.hellzic.mapper.album.IAlbumMapper;
+import com.hellteam.hellzic.mapper.album.IAlbumMapperImpl;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 class AlbumMapperTest {
 
-    AlbumMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = new AlbumMapper();
-    }
+    IAlbumMapper mapper = new IAlbumMapperImpl();
 
     @Test
-    void mapToAlbumNeanTest() {
+    void mapToAlbumBeanTest() {
 
         Album album = new Album();
-        album.id(42L);
-        album.label("the label");
+        album.setId(42L);
+        album.setLabel("the label");
 
         AlbumBean result = mapper.mapToAlbumBean(album);
 
         Assertions.assertThat(result)
                 .isNotNull()
-                .extracting(AlbumBean::id, AlbumBean::label)
+                .extracting(AlbumBean::getId, AlbumBean::getLabel)
                 .containsExactly(42L, "The Label");
     }
 
@@ -34,14 +33,14 @@ class AlbumMapperTest {
     void mapToAlbumEntityWithOneParamTest() {
 
         AlbumBean albumBean = new AlbumBean();
-        albumBean.id(42L);
-        albumBean.label("THE LABEL");
+        albumBean.setId(42L);
+        albumBean.setLabel("THE LABEL");
 
         Album response = mapper.mapToAlbumEntity(albumBean);
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(Album::id, Album::label)
+                .extracting(Album::getId, Album::getLabel)
                 .containsExactly(42L, "the label");
     }
 
@@ -49,13 +48,13 @@ class AlbumMapperTest {
     void mapToAlbumEntityWithTwoParamsTest() {
 
         AlbumBean albumBean = new AlbumBean();
-        albumBean.label("The Label");
+        albumBean.setLabel("The Label");
 
         Album response = mapper.mapToAlbumEntity(albumBean, "42");
 
         Assertions.assertThat(response)
                 .isNotNull()
-                .extracting(Album::id, Album::label)
+                .extracting(Album::getId, Album::getLabel)
                 .containsExactly(42L, "the label");
 
     }
