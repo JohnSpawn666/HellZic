@@ -4,7 +4,10 @@ import com.hellteam.hellzic.bean.ChansonBean;
 import com.hellteam.hellzic.error.*;
 import com.hellteam.hellzic.service.chanson.IChansonService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -23,7 +26,7 @@ public class ChansonController implements IControl<ChansonBean> {
     public ChansonBean create(ChansonBean chansonBean) {
         try {
             return service.createChanson(chansonBean);
-        } catch (NotFoundValueDatabase | DuplicateException | NullException ex) {
+        } catch (NotFoundValueDatabaseException | DuplicateException | NullException ex) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
         } catch (TechnicalException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
@@ -33,7 +36,7 @@ public class ChansonController implements IControl<ChansonBean> {
     }
 
     @Override
-    public ChansonBean update(@RequestBody ChansonBean chansonBean, @PathVariable("id") String id) {
+    public ChansonBean update(@RequestBody ChansonBean chansonBean, String id) {
         try {
             return service.updateChanson(chansonBean, id);
         } catch (Exception ex) {
@@ -42,7 +45,7 @@ public class ChansonController implements IControl<ChansonBean> {
     }
 
     @Override
-    public ChansonBean select(@PathVariable("id") String id) {
+    public ChansonBean select(String id) {
         try {
             return service.selectChanson(id);
         } catch (NoneException ex) {

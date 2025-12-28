@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface IChansonService {
 
-    ChansonBean createChanson(ChansonBean bean) throws TechnicalException, NotFoundValueDatabase, DuplicateException, NullException;
+    ChansonBean createChanson(ChansonBean bean) throws TechnicalException, NotFoundValueDatabaseException, DuplicateException, NullException;
 
     ChansonBean updateChanson(ChansonBean chansonBean, String id) throws TechnicalException, NoneException;
 

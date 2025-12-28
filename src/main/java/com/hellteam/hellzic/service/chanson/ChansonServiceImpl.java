@@ -17,7 +17,7 @@ public class ChansonServiceImpl implements IChansonService {
     }
 
     @Override
-    public ChansonBean createChanson(ChansonBean bean) throws TechnicalException, NotFoundValueDatabase, DuplicateException, NullException {
+    public ChansonBean createChanson(ChansonBean bean) throws TechnicalException, NotFoundValueDatabaseException, DuplicateException, NullException {
         return model.createChanson(bean);
     }
 

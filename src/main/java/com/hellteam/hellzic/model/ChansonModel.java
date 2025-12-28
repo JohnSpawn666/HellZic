@@ -33,12 +33,12 @@ public class ChansonModel {
      *
      * @param chansonBean Bean avec les données de la chanson
      * @return Chanson créée
-     * @throws TechnicalException    l'ID n'est pas au bon format
-     * @throws NotFoundValueDatabase Album non existant
-     * @throws DuplicateException    Valeur déjà existante
-     * @throws NullException         Titre non renseigné
+     * @throws TechnicalException             l'ID n'est pas au bon format
+     * @throws NotFoundValueDatabaseException Album non existant
+     * @throws DuplicateException             Valeur déjà existante
+     * @throws NullException                  Titre non renseigné
      */
-    public ChansonBean createChanson(ChansonBean chansonBean) throws TechnicalException, NotFoundValueDatabase, DuplicateException, NullException {
+    public ChansonBean createChanson(ChansonBean chansonBean) throws TechnicalException, NotFoundValueDatabaseException, DuplicateException, NullException {
         checkValues(chansonBean);
         return chansonMapper.mapToChansonBean(saveChanson(chansonBean, chansonMapper.mapToChanson(chansonBean)));
     }
@@ -49,17 +49,17 @@ public class ChansonModel {
      * @param chansonBean Bean avec les données de la chanson
      * @param entity      Valeurs à enregristrer en BDD
      * @return Bean enreigistré en BDD
-     * @throws DuplicateException    Valeurs déjà existantes
-     * @throws NotFoundValueDatabase Valeurs non existantes
+     * @throws DuplicateException             Valeurs déjà existantes
+     * @throws NotFoundValueDatabaseException Valeurs non existantes
      */
-    private Chanson saveChanson(ChansonBean chansonBean, Chanson entity) throws DuplicateException, NotFoundValueDatabase {
+    private Chanson saveChanson(ChansonBean chansonBean, Chanson entity) throws DuplicateException, NotFoundValueDatabaseException {
         try {
             return repository.save(entity);
         } catch (DataIntegrityViolationException ex) {
             if (ex.getMessage().contains("uni_label_album")) {
                 throw new DuplicateException("Une chanson existe déjà avec le titre " + chansonBean.titre + " et l'album " + chansonBean.getAlbumId());
             }
-            throw new NotFoundValueDatabase("ID de l'album " + chansonBean.albumId + " non trouvé dans la BDD");
+            throw new NotFoundValueDatabaseException("ID de l'album " + chansonBean.albumId + " non trouvé dans la BDD");
         }
     }
 
